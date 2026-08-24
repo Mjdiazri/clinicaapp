@@ -1,24 +1,25 @@
 package co.generation.clinica;
+
 import co.generation.clinica.datos.DatosCSV;
 import co.generation.clinica.model.Especialidad;
 import co.generation.clinica.model.Medico;
 import co.generation.clinica.model.Turno;
 import co.generation.clinica.service.ClinicaService;
 import co.generation.clinica.model.Paciente;
-import javax.xml.crypto.Data;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Locale;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         ClinicaService servicio = new ClinicaService();
         DatosCSV.cargar(servicio);
-        //Entrada de datos
+        // Entrada de datos
         Scanner usuario = new Scanner(System.in);
         int opcionMenu;
 
-        //Menu
+        // Menu
         do {
             System.out.println("""
                     ▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫
@@ -39,6 +40,7 @@ public class Main {
                     """);
             System.out.println("Selecciona una opcion: ");
             opcionMenu = usuario.nextInt();
+            usuario.nextLine();
             switch (opcionMenu) {
                 case 1:
                     System.out.println("1. Registra los datos del paciente");
@@ -48,33 +50,13 @@ public class Main {
                     System.out.println("2");
                     break;
                 case 3:
-                    System.out.println("Por favor ingresa tu cedula");
-                    //Pedir cedula
-                    int cedula = usuario.nextInt();
-                    usuario.nextLine();
-                    //Pedir datos doctor
-                    System.out.println("Por favor ingresa el nombre y apellido del doctor");
-                    String datosDoc = usuario.nextLine();
-                    //Validar datos
-                    //Pedir Datos Fecha
-                    System.out.println("Ingresa el año: ");
-                    int anio = usuario.nextInt();
-                    System.out.println("Ingresa el numero del mes: ");
-                    int mes = usuario.nextInt();
-                    System.out.println("Ingresa los dos digitos correspondientes al dia: ");
-                    int dia = usuario.nextInt();
-                    System.out.println("Ingresa los dos digitos correspondientes a la hora: ");
-                    int hora = usuario.nextInt();
-                    System.out.println("Ingresa los dos digitos correspondientes al minuto: ");
-                    int minuto = usuario.nextInt();
-                    //Crear fecha
-                    LocalDateTime.of(anio, mes, dia, hora, minuto);
+                    registrarTurno(usuario, servicio);
                     break;
                 case 4:
-                    System.out.println("4");
+                    listarTurnosDelDia(servicio);
                     break;
                 case 5:
-                    System.out.println("5");
+                    cancelarTurno(usuario, servicio);
                     break;
                 case 6:
                     System.out.println("6");
@@ -99,10 +81,8 @@ public class Main {
                     System.out.println("Opcion invalida");
             }
 
-        }
-        while (opcionMenu != 0);
+        } while (opcionMenu != 0);
         usuario.close();
-
 
     }
 
@@ -146,40 +126,66 @@ public class Main {
             System.out.println("Error de validación: " + exception.getMessage());
         }
     }
-}
 
-        /*
-        private static void registrarTurno(Scanner scanner, ClinicaService service){
-            try {
+    private static void registrarTurno(Scanner scanner, ClinicaService service) {
+        try {
+            System.out.println("Ingresa la cedula del paciente: ");
+            String cedula = scanner.nextLine();
 
-                System.out.println("Por favor ingresa tu cedula");
-                //Pedir cedula
-                int cedula = usuario.nextInt();
-                usuario.nextLine();
-                //Pedir datos doctor
-                System.out.println("Por favor ingresa el nombre y apellido del doctor");
-                String datosDoc = usuario.nextLine();
-                //Validar datos
-                //Pedir Datos Fecha
-                System.out.println("Ingresa el año: ");
-                int anio = usuario.nextInt();
-                System.out.println("Ingresa el numero del mes: ");
-                int mes = usuario.nextInt();
-                System.out.println("Ingresa los dos digitos correspondientes al dia: ");
-                int dia = usuario.nextInt();
-                System.out.println("Ingresa los dos digitos correspondientes a la hora: ");
-                int hora = usuario.nextInt();
-                System.out.println("Ingresa los dos digitos correspondientes al minuto: ");
-                int minuto = usuario.nextInt();
-                //Crear fecha
-                LocalDateTime.of(anio,mes, dia, hora, minuto);
-                Paciente
-                Turno nuevoTurno=new Turno()
-            } catch (IllegalArgumentException exception) {
-                System.out.println("Error de validación: " +exception.getMessage());
+            Paciente paciente = service.buscarPorCedula(cedula);
+            if (paciente == null) {
+                System.out.println("No se encontro un paciente con esa cedula.");
+                return;
             }
 
+            System.out.println("Ingresa el nombre del medico: ");
+            String nombreMedico = scanner.nextLine();
+            System.out.println("Ingresa el apellido del medico: ");
+            String apellidoMedico = scanner.nextLine();
 
+            Medico medico = service.buscarPorNombreApellido(nombreMedico, apellidoMedico);
+            if (medico == null) {
+                System.out.println("No se encontro un medico con ese nombre y apellido.");
+                return;
+            }
 
-        }*/
+            System.out.println("Ingresa el anio: ");
+            int anio = scanner.nextInt();
+            System.out.println("Ingresa el mes: ");
+            int mes = scanner.nextInt();
+            System.out.println("Ingresa el dia: ");
+            int dia = scanner.nextInt();
+            System.out.println("Ingresa la hora: ");
+            int hora = scanner.nextInt();
+            System.out.println("Ingresa el minuto: ");
+            int minuto = scanner.nextInt();
+            scanner.nextLine();
 
+            LocalDateTime fechaHora = LocalDateTime.of(anio, mes, dia, hora, minuto);
+            Turno nuevoTurno = new Turno(paciente, medico, fechaHora);
+            service.asignarTurno(nuevoTurno);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    private static void listarTurnosDelDia(ClinicaService service) {
+        List<Turno> turnos = service.listarTurnosDelDia(LocalDate.now());
+        if (turnos.isEmpty()) {
+            System.out.println("No hay turnos para el dia de hoy.");
+            return;
+        }
+        System.out.println("Turnos del dia:");
+        for (Turno turno : turnos) {
+            System.out.println(turno);
+        }
+    }
+
+    private static void cancelarTurno(Scanner scanner, ClinicaService service) {
+        System.out.println("Ingresa el ID del turno a cancelar: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+        service.cancelarTurno(id);
+    }
+}
