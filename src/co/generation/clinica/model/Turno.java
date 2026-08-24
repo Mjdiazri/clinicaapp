@@ -46,6 +46,9 @@ public class Turno {
     }
 
     public void setId(int id) {
+        if (id < 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo.");
+        }
         this.id = id;
     }
 

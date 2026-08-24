@@ -2,6 +2,9 @@ package co.generation.clinica.model;
 
 import co.generation.clinica.interfaces.Registrable;
 
+import java.util.Locale;
+import java.util.Objects;
+
 public class Medico implements Registrable {
 
     // Aqui se guarda el identificador del medico
@@ -18,34 +21,17 @@ public class Medico implements Registrable {
 
     // Aqui se crea el constructor donde medico recibe todos sus datos
     public Medico(int id, String nombre, String apellido, Especialidad especialidad) {
-
-        // Procedo a guardar el identificador recibido
-        this.id = id;
-
-        // Aqui se guardara el nombre recibido
-        this.nombre = nombre;
-
-        // Aqui se guardara el apellido recibido
-        this.apellido = apellido;
-
-        // Aqui se guardara la especialidad recibida
-        this.especialidad = especialidad;
-
-
-        }
+        setId(id);
+        setNombre(nombre);
+        setApellido(apellido);
+        setEspecialidad(especialidad);
+    }
 
     // Aqui se crea el segundo constructor para registrar un medico nuevo
     public Medico(String nombre, String apellido, Especialidad especialidad) {
-
-        //Aqui se guardara el nombre recibido nuevo
-        this.nombre = nombre;
-
-        // Aqui se guardara el apellido recibido nuevo
-        this.apellido = apellido;
-
-        // Aqui se guardara la especialidad recibida nueva
-        this.especialidad = especialidad;
-
+        setNombre(nombre);
+        setApellido(apellido);
+        setEspecialidad(especialidad);
     }
 
     // Aqui se validara que el nombre del medico no llegue vacio
@@ -132,10 +118,10 @@ public class Medico implements Registrable {
 
     // Aqui se actualizara el identificador del medico
     public void setId(int id) {
-
-        // Aqui se guardara el nuevo identificador recibido
+        if (id < 0) {
+            throw new IllegalArgumentException("El id no puede ser negativo.");
+        }
         this.id = id;
-
     }
 
     // Aqui se obtendra el nombre del medico
@@ -146,6 +132,10 @@ public class Medico implements Registrable {
 
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = validarTexto(nombre, "El nombre del medico es obligatorio.");
+    }
+
     // Aqui se obtendra el apellido del medico
     public String getApellido() {
 
@@ -154,11 +144,22 @@ public class Medico implements Registrable {
 
     }
 
+    public void setApellido(String apellido) {
+        this.apellido = validarTexto(apellido, "El apellido del medico es obligatorio.");
+    }
+
     //Obtener especialidad
 
 
     public Especialidad getEspecialidad() {
         return especialidad;
+    }
+
+    public void setEspecialidad(Especialidad especialidad) {
+        if (especialidad == null) {
+            throw new IllegalArgumentException("La especialidad es obligatoria.");
+        }
+        this.especialidad = especialidad;
     }
 
     // Aqui se indicara como se mostraran los datos del medico en la consola
@@ -196,6 +197,18 @@ public class Medico implements Registrable {
                 && nombre.equalsIgnoreCase(otroMedico.nombre)
                 && apellido.equalsIgnoreCase(otroMedico.apellido);
 
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre.toLowerCase(Locale.ROOT), apellido.toLowerCase(Locale.ROOT));
+    }
+
+    private String validarTexto(String valor, String mensaje) {
+        if (valor == null || valor.trim().isEmpty()) {
+            throw new IllegalArgumentException(mensaje);
+        }
+        return valor.trim();
     }
 
 }

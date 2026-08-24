@@ -3,6 +3,7 @@ package co.generation.clinica.service;
 import co.generation.clinica.model.Paciente;
 import co.generation.clinica.model.EstadoTurno;
 import co.generation.clinica.model.Turno;
+import co.generation.clinica.interfaces.Consultable;
 
 // PARTE LIZETH LONDOÑO BLOQUE MEDICO
 import co.generation.clinica.model.Medico;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class ClinicaService {
+public class ClinicaService implements Consultable {
 
     private final List<Paciente> pacientes = new ArrayList<>();
     private final List<Turno> turnos = new ArrayList<>();
@@ -152,6 +153,7 @@ public class ClinicaService {
         return buscarTurnoPorId(idTurno) != null;
     }
 
+    @Override
     public List<Turno> listarTurnosDelDia(LocalDate fechaConsulta) {
         List<Turno> turnosFiltrados = new ArrayList<>();
         if (fechaConsulta == null)
@@ -169,6 +171,7 @@ public class ClinicaService {
 
     // PARTE CASO 6 LIZETH LONDOÑO
     // Aqui se buscaran todos los turnos que pertenecen a un medico
+    @Override
     public List<Turno> buscarPorMedico(Medico medico) {
 
         // Aqui se crea una lista donde se guardaran los turnos encontrados
@@ -193,10 +196,12 @@ public class ClinicaService {
         }
 
         // Aqui se retornaran todos los turnos encontrados para el medico
+        turnosMedico.sort(Comparator.comparing(Turno::getFechaHora));
         return turnosMedico;
     }
     // ---------------------------------
     // Metodo que busca los turnos de un paciente
+    @Override
     public List<Turno> buscarPorPaciente(Paciente paciente) {
         List<Turno> turnosPaciente = new ArrayList<>();
         if (paciente == null) {
@@ -208,6 +213,7 @@ public class ClinicaService {
                 turnosPaciente.add(turno);
             }
         }
+        turnosPaciente.sort(Comparator.comparing(Turno::getFechaHora));
         return turnosPaciente;
     }
 
