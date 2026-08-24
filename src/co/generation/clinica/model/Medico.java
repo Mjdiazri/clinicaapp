@@ -1,6 +1,8 @@
 package co.generation.clinica.model;
 
-public class Medico {
+import co.generation.clinica.interfaces.Registrable;
+
+public class Medico implements Registrable {
 
     // Aqui se guarda el identificador del medico
     private int id;
@@ -95,6 +97,7 @@ public class Medico {
     }
 
     // Aqui se validara que todos los datos obligatorios de medico sean validos
+    @Override
     public boolean esValido() {
 
         // Aqui se revisara que el nombre, el apellido y la especialidad sean validas
@@ -107,6 +110,15 @@ public class Medico {
 
         // Aqui retorara false si alguno de los datos del medico no son validos
         return false;
+
+    }
+
+    // Aqui se obtendran los datos del medico para su registro
+    @Override
+    public String getDatosRegistro() {
+
+        // Aqui retornara los datos del medico separados por comas
+        return id + "," + nombre + "," + apellido + "," + especialidad;
 
     }
 
