@@ -4,6 +4,7 @@ import java.util.Locale;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 import co.generation.clinica.datos.DatosCSV;
@@ -106,10 +107,10 @@ public class Main {
             System.out.println("Ingresa tu cedula: ");
             String cedula = scanner.nextLine();
 
-            System.out.println("Ingresa tu nomre: ");
+            System.out.println("Ingresa tu nombre: ");
             String nombre = scanner.nextLine();
 
-            System.out.println("Ingresa tu appellido: ");
+            System.out.println("Ingresa tu apellido: ");
             String apellido = scanner.nextLine();
 
             System.out.println("Ingresa tu telefono: ");
