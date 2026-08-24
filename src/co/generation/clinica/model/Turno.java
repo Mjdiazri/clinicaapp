@@ -1,5 +1,6 @@
 package co.generation.clinica.model;
 
+import java.util.Objects;
 import java.time.LocalDateTime;
 
 public class Turno {
@@ -82,5 +83,20 @@ public class Turno {
                 paciente.getNombre() + " " + paciente.getApellido() + " - " +
                 medico.getNombre() + " " + medico.getApellido() + " (" + medico.getEspecialidad() + ") - " +
                 fechaHora;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (!(obj instanceof Turno))
+            return false;
+        Turno otro = (Turno) obj;
+        return medico.equals(otro.medico) && fechaHora.equals(otro.fechaHora);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(medico, fechaHora);
     }
 }
