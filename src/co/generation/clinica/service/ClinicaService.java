@@ -66,8 +66,12 @@ public class ClinicaService {
         List<Paciente> pacientesOrdenados = new ArrayList<>(pacientes);
         pacientesOrdenados.sort(Comparator.comparing(Paciente::getApellido)
                 .thenComparing(Paciente::getNombre));
+        System.out.printf("%-30s | %-10s | %-10s%n", "NOMBRE PACIENTE", "CEDULA", "TELEFONO");
+        System.out.println("----------------------------------------------------------");
         for (Paciente paciente : pacientesOrdenados) {
-            System.out.println(paciente);
+            String nombreCompleto = paciente.getNombre() + " " + paciente.getApellido();
+            System.out.printf("%-30s | %-10s | %-10s%n", nombreCompleto,
+                    paciente.getCedula(), paciente.getTelefono());
         }
     }
 
@@ -143,6 +147,11 @@ public class ClinicaService {
         System.out.println("Estado actualizado a " + nuevoEstado);
     }
 
+    // Metodo que verifica si existe un turno
+    public boolean existeTurno(int idTurno) {
+        return buscarTurnoPorId(idTurno) != null;
+    }
+
     public List<Turno> listarTurnosDelDia(LocalDate fechaConsulta) {
         List<Turno> turnosFiltrados = new ArrayList<>();
         if (fechaConsulta == null)
@@ -187,6 +196,20 @@ public class ClinicaService {
         return turnosMedico;
     }
     // ---------------------------------
+    // Metodo que busca los turnos de un paciente
+    public List<Turno> buscarPorPaciente(Paciente paciente) {
+        List<Turno> turnosPaciente = new ArrayList<>();
+        if (paciente == null) {
+            return turnosPaciente;
+        }
+
+        for (Turno turno : turnos) {
+            if (turno.getPaciente().equals(paciente)) {
+                turnosPaciente.add(turno);
+            }
+        }
+        return turnosPaciente;
+    }
 
     private Turno buscarTurnoPorId(int idBuscado) {
         for (Turno registro : turnos) {
