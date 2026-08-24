@@ -3,6 +3,10 @@ package co.generation.clinica.service;
 import co.generation.clinica.model.Paciente;
 import co.generation.clinica.model.EstadoTurno;
 import co.generation.clinica.model.Turno;
+
+// PARTE LIZETH LONDOÑO BLOQUE MEDICO
+import co.generation.clinica.model.Medico;
+// ---------------------------------
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -162,4 +166,128 @@ public class ClinicaService {
         }
         return null;
     }
+
+    // PARTE LIZETH LONDOÑO BLOQUE MEDICO
+
+    // Aqui se crea la lista donde se guardaran los medicos registrados
+    private final List<Medico> medicos = new ArrayList<>();
+
+    // Aqui se crea el meto que registrara un medico en la clinica
+    public boolean registrarMedico(Medico medico) {
+
+        // Aqui se revisara que el medico exista y que sus datos sean validos
+        if (medico == null || !medico.esValido()) {
+
+            // Aqui se muestra un mensaje si los datos del medico no son validos
+            System.out.println("Los datos del medico no son validos");
+
+            // Aqui retornara false porque el medico no pudo ser registrado por no tener datos validos
+            return false;
+
+        }
+
+        // Aqui se revisara si el medico ya se encuentra registrado
+        if (medicos.contains(medico)) {
+
+            // Aqui se mostrara un mensaje si ya existe un medico con el mismo nombre y apellido
+            System.out.println("El medico ya se encuentra registrado");
+
+            // Aqui retornara false porque no se tiene permitido registrar un medico repetido
+            return false;
+
+        }
+
+        // Aqui se asignara el siguiente identificador disponible al medico
+        medico.setId(siguienteIdMedico());
+
+        // Aqui se procede a agregar el medico a la lista de medicos registrados
+        medicos.add(medico);
+
+        // Aqui se muestran los datos del medico que fue registrado
+        System.out.println("Medico registrado: " + medico.getDatosRegistro());
+
+        // Aqui retornara true porque el medico fue registrado correctamente
+        return true;
+
+
+    }
+
+    // Aqui se devolveran los medicos registrados
+    public List<Medico> getMedicos(){
+
+        // Aqui se retornara la lista de medicos registrados
+        return  medicos;
+
+    }
+
+    // Aqui se buscara un medico por su nombre y apellido
+    public Medico buscarPorNombreApellido(String nombre, String apellido) {
+
+        // Aqui se revisara que el nombre y el apellido tengan informacion
+        if (nombre == null || apellido == null) {
+
+            // Aqui retornara null porque no hay datos suficientes para realizar la busqueda
+            return null;
+
+        }
+
+        // Aqui se recorrera la lista de medicos registrados
+        for (Medico medico : medicos) {
+
+            // Aqui se comparara el nombre y apellido sin importar mayusculas o minusculas
+            if (medico.getNombre().equalsIgnoreCase(nombre.trim()) && medico.getApellido().equalsIgnoreCase(apellido.trim())) {
+
+                // Aqui se retornara el medico encontrado
+                return medico;
+
+            }
+
+        }
+
+        // Aqui retornara null si no se encontro un medico con ese nombre y apellido
+        return null;
+
+    }
+
+    // Aqui se listaram los medicos registrados en la clinica
+    public void listarMedicos() {
+
+        // Aqui revisara si no hay medicos registrados
+        if (medicos.isEmpty()) {
+
+            // Aqui se mostrara un mensaje si la lista de medicos esta vacia
+            System.out.println("No hay medicos registrados.");
+
+            // Aqui se terminara el metodo porque no hay medicos para mostrar
+            return;
+
+        }
+
+        // Aqui se crea una nueva lista para ordenar los medicos sin modificar la lista original
+        List<Medico> medicosOrdenados = new ArrayList<>(medicos);
+
+        // Aqui se ordenaran los medicos primero por apellido y despues por nombre
+        medicosOrdenados.sort(Comparator.comparing(Medico::getApellido).thenComparing(Medico::getNombre));
+
+        // Aqui se recorrera la lista de medicos ya ordenada
+        for (Medico medico : medicosOrdenados) {
+
+            // Aqui se mostrara el mesaje de cada medico registrado
+            System.out.println(medico);
+
+        }
+    }
+
+    // Aqui se calculara el siguiente identificador para registrar un medico
+    private int siguienteIdMedico() {
+
+        // Aqui se buscara el identificador mas alto entre los medicos registrados
+        return medicos.stream()
+                .mapToInt(Medico::getId)
+                .max()
+                .orElse(0) + 1;
+
+    }
+
+    // ---------------------------------
 }

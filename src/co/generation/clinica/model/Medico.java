@@ -122,4 +122,73 @@ public class Medico implements Registrable {
 
     }
 
+    // Aqui se obtendra el identificador del medico
+    public int getId() {
+
+        // Aqui retornara el identificador del medico
+        return id;
+
+    }
+
+    // Aqui se actualizara el identificador del medico
+    public void setId(int id) {
+
+        // Aqui se guardara el nuevo identificador recibido
+        this.id = id;
+
+    }
+
+    // Aqui se obtendra el nombre del medico
+    public String getNombre() {
+
+        // Aqui retornara el nombre del medico
+        return nombre;
+
+    }
+
+    // Aqui se obtendra el apellido del medico
+    public String getApellido() {
+
+        // Aqui retornara el apellido del medico
+        return apellido;
+
+    }
+
+    // Aqui se indicara como se mostraran los datos del medico en la consola
+    @Override
+    public String toString() {
+
+        // Aqui se retornara el nombre, apellido y especialidad del medico
+        return  "Dr. " + nombre + " " + apellido + " - " + especialidad;
+
+    }
+
+    // Aqui se comparara si dos medicos tienen el mismo nombre y apellido
+    @Override
+    public boolean equals(Object object) {
+
+        // Aqui se revisara si se esta comparando exactamente el mismo objeto
+        if (this == object) {
+
+            return true;
+
+        }
+
+        // Aqui se revisara que el objeto que se recibio sea un medico
+        if (!(object instanceof Medico)) {
+
+            return false;
+
+        }
+
+        // Aqui se convierte el objeto recibido en un medico para poder comparar sus datos
+        Medico otroMedico = (Medico) object;
+
+        // Aqui se comparara el nombre y el apellido sin importar mayuscula o minusculas
+        return nombre != null && apellido != null
+                && nombre.equalsIgnoreCase(otroMedico.nombre)
+                && apellido.equalsIgnoreCase(otroMedico.apellido);
+
+    }
+
 }
