@@ -61,9 +61,15 @@ public class Main {
                 case 5:
                     cancelarTurno(usuario, servicio);
                     break;
+                // PARTE CASO 6 LIZETH LONDOÑO
                 case 6:
-                    System.out.println("6");
+                    System.out.println("6. Ver turnos por medico");
+
+                    // Aqui se llama al metodo que permitira consultar los turnos de un medico
+                    verTurnosPorMedico(usuario, servicio);
+
                     break;
+                // ---------------------------------
                 case 7:
                     verTurnosPorPaciente(usuario, servicio);
                     break;
@@ -73,9 +79,14 @@ public class Main {
                 case 9:
                     servicio.listarPacientes();
                     break;
+                // PARTE CASO 10 LIZETH LONDOÑO
                 case 10:
-                    System.out.println("10");
+                    System.out.println("10. Listar medicos");
+
+                    // Aqui se mostraran los medicos que se encuentran registrados
+                    servicio.listarMedicos();
                     break;
+                // ---------------------------------
                 case 0:
                     DatosCSV.guardar(servicio);
                     System.out.println("Hasta pronto. Datos Guardados");
@@ -244,4 +255,50 @@ public class Main {
         scanner.nextLine();
         service.cancelarTurno(id);
     }
+
+    // PARTE CASO 6 LIZETH LONDOÑO
+    // Aqui se consultaran los turnos que pertenecen a un medico
+    private static void verTurnosPorMedico(Scanner scanner, ClinicaService service) {
+
+        // Aqui se pedira el nombre del medico
+        System.out.println("Ingresa el nombre del medico: ");
+        String nombre = scanner.nextLine();
+
+        // Aqui se pedira el apellido del medico
+        System.out.println("Ingresa el apellido del medico: ");
+        String apellido = scanner.nextLine();
+
+        // Aqui se buscara el medico registrado por su nombre y apellido
+        Medico medico = service.buscarPorNombreApellido(nombre, apellido);
+
+        // Aqui se revisara si el medico existe
+        if (medico == null) {
+
+            // Aqui se mostrara un mensaje si el medico no se encuentra registrado
+            System.out.println("El medico no existe.");
+            return;
+        }
+
+        // Aqui se buscaran los turnos que pertenecen al medico
+        List<Turno> turnosMedico = service.buscarPorMedico(medico);
+
+        // Aqui se revisara si el medico no tiene turnos registrados
+        if (turnosMedico.isEmpty()) {
+
+            // Aqui se mostrara un mensaje si no existen turnos para el medico
+            System.out.println("El medico no tiene turnos registrados.");
+            return;
+        }
+
+        // Aqui se recorrera la lista de turnos encontrados
+        for (Turno turno : turnosMedico) {
+
+            // Aqui se mostrara cada turno encontrado
+            System.out.println(turno);
+        }
+    }
+    // ---------------------------------
+
+
+
 }
