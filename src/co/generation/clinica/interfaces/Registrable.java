@@ -1,4 +1,8 @@
 package co.generation.clinica.interfaces;
 
-public class Registrable {
+public interface Registrable {
+
+    String getDatosRegistro();
+
+    boolean esValido();
 }
