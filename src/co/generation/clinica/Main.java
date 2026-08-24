@@ -177,7 +177,7 @@ public class Main {
     private static void registrarMedico(Scanner scanner, ClinicaService service) {
         try {
 
-            System.out.println("Ingresa tu nomre: ");
+            System.out.println("Ingresa tu nombre: ");
             String nombre = scanner.nextLine();
 
             System.out.println("Ingresa tu apellido: ");
