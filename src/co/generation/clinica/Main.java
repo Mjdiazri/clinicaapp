@@ -10,6 +10,7 @@ import co.generation.clinica.model.Paciente;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Main {
@@ -144,7 +145,7 @@ public class Main {
         String estadoIngresado = scanner.nextLine();
 
         try {
-            EstadoTurno nuevoEstado = EstadoTurno.valueOf(estadoIngresado.trim().toUpperCase(Locale.ROOT));
+            EstadoTurno nuevoEstado = EstadoTurno.valueOf(estadoIngresado.trim().toUpperCase());
             servicio.cambiarEstadoTurno(idTurno, nuevoEstado);
         } catch (IllegalArgumentException exception) {
             System.out.println("Estado no valido.");

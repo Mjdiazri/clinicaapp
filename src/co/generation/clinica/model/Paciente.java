@@ -50,11 +50,13 @@ public class Paciente implements Registrable {
 
     //Metodo que valida y asigna la cedula del paciente
     public void setCedula(String cedula) {
-        String cedulaLimpia = validarTexto(cedula, "La cedula es obligatoria.");
-        if (!cedulaLimpia.matches(FORMATO_CEDULA)) {
-            throw new IllegalArgumentException("La cedula debe contener solo digitos y tener maximo 10 caracteres.");
+        if (cedula == null || cedula.isBlank()) {
+            throw new IllegalArgumentException("La cedula es obligatoria.");
         }
-        this.cedula = cedulaLimpia;
+        if (!cedula.matches(FORMATO_CEDULA)) {
+            throw new IllegalArgumentException("La cedula debe contener solo digitos, sin espacios y tener maximo 10 caracteres.");
+        }
+        this.cedula = cedula;
     }
 
     //Metodo que devuelve el nombre del paciente
