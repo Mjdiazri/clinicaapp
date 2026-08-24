@@ -1,12 +1,13 @@
 package co.generation.clinica;
 import co.generation.clinica.datos.DatosCSV;
+import co.generation.clinica.model.EstadoTurno;
 import co.generation.clinica.model.Especialidad;
 import co.generation.clinica.model.Medico;
 import co.generation.clinica.model.Turno;
 import co.generation.clinica.service.ClinicaService;
 import co.generation.clinica.model.Paciente;
-import javax.xml.crypto.Data;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -38,14 +39,15 @@ public class Main {
                     ▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫
                     """);
             System.out.println("Selecciona una opcion: ");
-            opcionMenu = usuario.nextInt();
+            opcionMenu = leerEntero(usuario);
             switch (opcionMenu) {
                 case 1:
                     System.out.println("1. Registra los datos del paciente");
                     registrarPaciente(usuario, servicio);
                     break;
                 case 2:
-                    System.out.println("2");
+                    System.out.println("2. Registra los datos del medico");
+                    registrarMedico(usuario, servicio);
                     break;
                 case 3:
                     System.out.println("Por favor ingresa tu cedula");
@@ -80,13 +82,13 @@ public class Main {
                     System.out.println("6");
                     break;
                 case 7:
-                    System.out.println("7");
+                    verTurnosPorPaciente(usuario, servicio);
                     break;
                 case 8:
-                    System.out.println("8");
+                    cambiarEstadoTurno(usuario, servicio);
                     break;
                 case 9:
-                    System.out.println("9");
+                    servicio.listarPacientes();
                     break;
                 case 10:
                     System.out.println("10");
@@ -124,6 +126,59 @@ public class Main {
 
         } catch (IllegalArgumentException exception) {
             System.out.println("Error de validación: " + exception.getMessage());
+        }
+    }
+
+    //Metodo que muestra los turnos de un paciente
+    private static void verTurnosPorPaciente(Scanner scanner, ClinicaService servicio) {
+        System.out.println("Ingrese la cedula del paciente: ");
+        String cedula = scanner.nextLine();
+        Paciente paciente = servicio.buscarPorCedula(cedula);
+
+        if (paciente == null) {
+            System.out.println("Paciente no encontrado.");
+            return;
+        }
+
+        List<Turno> turnosPaciente = servicio.buscarPorPaciente(paciente);
+        if (turnosPaciente.isEmpty()) {
+            System.out.println("El paciente no tiene turnos registrados.");
+            return;
+        }
+
+        for (Turno turno : turnosPaciente) {
+            System.out.println(turno);
+        }
+    }
+
+    //Metodo que cambia el estado de un turno
+    private static void cambiarEstadoTurno(Scanner scanner, ClinicaService servicio) {
+        System.out.println("Ingrese el id del turno: ");
+        int idTurno = leerEntero(scanner);
+        if (!servicio.existeTurno(idTurno)) {
+            System.out.println("Turno no encontrado.");
+            return;
+        }
+
+        System.out.println("Ingrese el nuevo estado (PENDIENTE, ATENDIDO o CANCELADO): ");
+        String estadoIngresado = scanner.nextLine();
+
+        try {
+            EstadoTurno nuevoEstado = EstadoTurno.valueOf(estadoIngresado.trim().toUpperCase(Locale.ROOT));
+            servicio.cambiarEstadoTurno(idTurno, nuevoEstado);
+        } catch (IllegalArgumentException exception) {
+            System.out.println("Estado no valido.");
+        }
+    }
+
+    //Metodo que lee un numero entero del menu
+    private static int leerEntero(Scanner scanner) {
+        String valor = scanner.nextLine().trim();
+        try {
+            return Integer.parseInt(valor);
+        } catch (NumberFormatException exception) {
+            System.out.println("Debe ingresar un numero valido.");
+            return -1;
         }
     }
 
