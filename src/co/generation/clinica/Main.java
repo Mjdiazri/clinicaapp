@@ -127,57 +127,33 @@ public class Main {
         }
     }
 
-    private static void registrarMedico(Scanner scanner, ClinicaService service){
+    private static void registrarMedico(Scanner scanner, ClinicaService service) {
         try {
-
-            System.out.println("Ingresa tu nomre: ");
+            System.out.println("Ingresa tu nombre:");
             String nombre = scanner.nextLine();
 
-            System.out.println("Ingresa tu apellido: ");
+            System.out.println("Ingresa tu apellido:");
             String apellido = scanner.nextLine();
 
-            System.out.println("Ingresa tu especialidad: ");
+            System.out.println("Ingresa tu especialidad:");
             String nombreEspecialidad = scanner.nextLine();
-            Especialidad especialidad = Especialidad.valueOf(nombreEspecialidad.toUpperCase());
 
-            service.registrarMedico(new Medico(nombre, apellido, especialidad));
+            Especialidad especialidad =
+                    Especialidad.valueOf(nombreEspecialidad.trim().toUpperCase());
+
+            service.registrarMedico(
+                    new Medico(nombre, apellido, especialidad)
+            );
 
         } catch (IllegalArgumentException exception) {
-            System.out.println("Error de validación: " +exception.getMessage());
+            System.out.println(
+                    "Error de validación: " + exception.getMessage()
+            );
         }
-
-
-        private static void registrarTurno(Scanner scanner, ClinicaService service){
-            try {
-
-                System.out.println("Por favor ingresa tu cedula");
-                //Pedir cedula
-                int cedula = usuario.nextInt();
-                usuario.nextLine();
-                //Pedir datos doctor
-                System.out.println("Por favor ingresa el nombre y apellido del doctor");
-                String datosDoc = usuario.nextLine();
-                //Validar datos
-                //Pedir Datos Fecha
-                System.out.println("Ingresa el año: ");
-                int anio = usuario.nextInt();
-                System.out.println("Ingresa el numero del mes: ");
-                int mes = usuario.nextInt();
-                System.out.println("Ingresa los dos digitos correspondientes al dia: ");
-                int dia = usuario.nextInt();
-                System.out.println("Ingresa los dos digitos correspondientes a la hora: ");
-                int hora = usuario.nextInt();
-                System.out.println("Ingresa los dos digitos correspondientes al minuto: ");
-                int minuto = usuario.nextInt();
-                //Crear fecha
-                LocalDateTime.of(anio,mes, dia, hora, minuto);
-                Paciente
-                Turno nuevoTurno=new Turno()
-            } catch (IllegalArgumentException exception) {
-                System.out.println("Error de validación: " +exception.getMessage());
-            }
+    }
+}
 
 
 
-        }
+
 
