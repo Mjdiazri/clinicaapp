@@ -158,6 +158,36 @@ public class ClinicaService {
         return turnosFiltrados;
     }
 
+    // PARTE CASO 6 LIZETH LONDOÑO
+    // Aqui se buscaran todos los turnos que pertenecen a un medico
+    public List<Turno> buscarPorMedico(Medico medico) {
+
+        // Aqui se crea una lista donde se guardaran los turnos encontrados
+        List<Turno> turnosMedico = new ArrayList<>();
+
+        // Aqui se revisara que exista un medico para realizar la busqueda
+        if (medico == null) {
+
+            // Aqui se retornara la lista vacia porque no hay un medico para buscar
+            return turnosMedico;
+        }
+
+        // Aqui se recorrera la lista de turnos registrados
+        for (Turno turno : turnos) {
+
+            // Aqui se comparara el medico del turno con el medico que se esta buscando
+            if (turno.getMedico().equals(medico)) {
+
+                // Aqui se agregara el turno encontrado a la lista
+                turnosMedico.add(turno);
+            }
+        }
+
+        // Aqui se retornaran todos los turnos encontrados para el medico
+        return turnosMedico;
+    }
+    // ---------------------------------
+
     private Turno buscarTurnoPorId(int idBuscado) {
         for (Turno registro : turnos) {
             if (registro.getId() == idBuscado) {
@@ -266,8 +296,8 @@ public class ClinicaService {
         // Aqui se crea una nueva lista para ordenar los medicos sin modificar la lista original
         List<Medico> medicosOrdenados = new ArrayList<>(medicos);
 
-        // Aqui se ordenaran los medicos primero por apellido y despues por nombre
-        medicosOrdenados.sort(Comparator.comparing(Medico::getApellido).thenComparing(Medico::getNombre));
+        // Aqui se ordenaran los medicos primero por especialidad y despues por apellido
+        medicosOrdenados.sort(Comparator.comparing(Medico::getEspecialidad).thenComparing(Medico::getApellido));
 
         // Aqui se recorrera la lista de medicos ya ordenada
         for (Medico medico : medicosOrdenados) {
