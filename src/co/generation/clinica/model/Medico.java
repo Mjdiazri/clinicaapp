@@ -154,6 +154,13 @@ public class Medico implements Registrable {
 
     }
 
+    //Obtener especialidad
+
+
+    public Especialidad getEspecialidad() {
+        return especialidad;
+    }
+
     // Aqui se indicara como se mostraran los datos del medico en la consola
     @Override
     public String toString() {

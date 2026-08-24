@@ -38,8 +38,8 @@ public class Main {
                     ▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫▫
                     """);
             System.out.println("Selecciona una opcion: ");
-             opcionMenu = usuario.nextInt();
-            switch (opcionMenu){
+            opcionMenu = usuario.nextInt();
+            switch (opcionMenu) {
                 case 1:
                     System.out.println("1. Registra los datos del paciente");
                     registrarPaciente(usuario, servicio);
@@ -68,7 +68,7 @@ public class Main {
                     System.out.println("Ingresa los dos digitos correspondientes al minuto: ");
                     int minuto = usuario.nextInt();
                     //Crear fecha
-                    LocalDateTime.of(anio,mes, dia, hora, minuto);
+                    LocalDateTime.of(anio, mes, dia, hora, minuto);
                     break;
                 case 4:
                     System.out.println("4");
@@ -104,9 +104,9 @@ public class Main {
         usuario.close();
 
 
-
     }
-    private static void registrarPaciente(Scanner scanner, ClinicaService service){
+
+    private static void registrarPaciente(Scanner scanner, ClinicaService service) {
         try {
             System.out.println("Ingresa tu cedula: ");
             String cedula = scanner.nextLine();
@@ -123,11 +123,11 @@ public class Main {
             service.registrarPaciente(new Paciente(cedula, nombre, apellido, telefono));
 
         } catch (IllegalArgumentException exception) {
-            System.out.println("Error de validación: " +exception.getMessage());
+            System.out.println("Error de validación: " + exception.getMessage());
         }
     }
 
-    private static void registrarMedico(Scanner scanner, ClinicaService service){
+    private static void registrarMedico(Scanner scanner, ClinicaService service) {
         try {
 
             System.out.println("Ingresa tu nomre: ");
@@ -143,10 +143,12 @@ public class Main {
             service.registrarMedico(new Medico(nombre, apellido, especialidad));
 
         } catch (IllegalArgumentException exception) {
-            System.out.println("Error de validación: " +exception.getMessage());
+            System.out.println("Error de validación: " + exception.getMessage());
         }
+    }
+}
 
-
+        /*
         private static void registrarTurno(Scanner scanner, ClinicaService service){
             try {
 
@@ -179,5 +181,5 @@ public class Main {
 
 
 
-        }
+        }*/
 
