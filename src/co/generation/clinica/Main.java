@@ -1,16 +1,18 @@
 package co.generation.clinica;
 
-import co.generation.clinica.datos.DatosCSV;
-import co.generation.clinica.model.EstadoTurno;
-import co.generation.clinica.model.Especialidad;
-import co.generation.clinica.model.Medico;
-import co.generation.clinica.model.Turno;
-import co.generation.clinica.service.ClinicaService;
-import co.generation.clinica.model.Paciente;
+import java.util.Locale;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Scanner;
+
+import co.generation.clinica.datos.DatosCSV;
+import co.generation.clinica.model.Especialidad;
+import co.generation.clinica.model.EstadoTurno;
+import co.generation.clinica.model.Medico;
+import co.generation.clinica.model.Paciente;
+import co.generation.clinica.model.Turno;
+import co.generation.clinica.service.ClinicaService;
 
 public class Main {
     public static void main(String[] args) {
@@ -120,7 +122,7 @@ public class Main {
         }
     }
 
-    //Metodo que muestra los turnos de un paciente
+    // Metodo que muestra los turnos de un paciente
     private static void verTurnosPorPaciente(Scanner scanner, ClinicaService servicio) {
         System.out.println("Ingrese la cedula del paciente: ");
         String cedula = scanner.nextLine();
@@ -142,7 +144,7 @@ public class Main {
         }
     }
 
-    //Metodo que cambia el estado de un turno
+    // Metodo que cambia el estado de un turno
     private static void cambiarEstadoTurno(Scanner scanner, ClinicaService servicio) {
         System.out.println("Ingrese el id del turno: ");
         int idTurno = leerEntero(scanner);
@@ -162,7 +164,7 @@ public class Main {
         }
     }
 
-    //Metodo que lee un numero entero del menu
+    // Metodo que lee un numero entero del menu
     private static int leerEntero(Scanner scanner) {
         String valor = scanner.nextLine().trim();
         try {
@@ -297,7 +299,5 @@ public class Main {
         }
     }
     // ---------------------------------
-
-
 
 }
